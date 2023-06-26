@@ -153,8 +153,12 @@
 			convertedKeys = `alt+${convertedKeys}`;
 		}
 		convertedKeys = convertedKeys.replaceAll("arrow", "");
+		convertedKeys = convertedKeys.replaceAll(".", "oem_1");
 		console.log(convertedKeys);
-		explanations = data.json.filter((a) => a.key === convertedKeys);
+
+		explanations = data.json.filter((a) => {
+			return a.key === convertedKeys;
+		});
 		console.log("expl", explanations);
 		if (explanations.length === 0) {
 			explanations = [{ key: `No key detected for ${convertedKeys}.` }];
@@ -170,7 +174,7 @@
 
 	function getUnboundKeys() {
 		// thanks chatgpt (... took 10 tries though)
-		const modifierKeys = ["ctrl", "shift", "alt", "win"];
+		const modifierKeys = ["ctrl", "shift", "alt"];
 		const otherKeys = [
 			"a",
 			"b",
@@ -283,7 +287,8 @@
 <div class="flex flex-col items-center">
 	<h1 class="text-4xl">VSCode hotkey viewer</h1>
 	<h2>Press a key combination to see your defined hotkeys.</h2>
-	<button on:click={() => getUnboundKeys()}>Get all unbound keys</button>
+	<button class="rounded bg-green-300 p-2" on:click={() => getUnboundKeys()}
+		>Get all unbound keys</button>
 </div>
 <div class="m-4">
 	<input bind:checked={dvorak} type="checkbox" name="layout-toggle" id="" />

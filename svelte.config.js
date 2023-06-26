@@ -292,10 +292,10 @@ const config = {
 		adapter: adapter(),
 	},
 	vitePlugin: {
-		inspector: {
-			toggleKeyCombo: "shift",
-			holdMode: true,
-		},
+		// inspector: {
+		// 	toggleKeyCombo: "shift",
+		// 	holdMode: true,
+		// },
 	},
 };
 

@@ -11,12 +11,15 @@ export async function load() {
 	// console.log(defaultJSON);
 	let json;
 	json = fs.readFileSync(keybindingsPath, "utf-8");
+	json = JSON.parse(stripJsonComments(json));
 
 	for (const userKeybinding of json) {
 		const index = defaultJSON.findIndex((defaultJSON) => defaultJSON.key === userKeybinding.key);
 
 		if (index !== -1) {
 			defaultJSON[index] = userKeybinding;
+		} else {
+			defaultJSON.push(userKeybinding); // Add the user keybinding to the end if it doesn't exist in defaultJSON
 		}
 	}
 	// console.log(defaultJSON)

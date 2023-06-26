@@ -57,7 +57,7 @@
 				"control",
 				"meta",
 				"alt",
-				"spacebar",
+				" ",
 				"altgr",
 				"meta",
 				"fn",
@@ -109,7 +109,7 @@
 				"control",
 				"meta",
 				"alt",
-				"spacebar",
+				" ",
 				"altgr",
 				"meta",
 				"fn",
@@ -121,27 +121,170 @@
 		}
 	}
 	function getKeyData(key) {
-		let keys = data.json.filter((a) => a.key === key);
-		console.log(keys);
+		explanations = data.json.filter((a) => a.key === key);
 		return keys;
 	}
 
 	let pressedKey = {};
 	function handleKeydown(e) {
 		pressedKey[e.key.toLowerCase()] = e.key.toLowerCase();
-		// TODO add shift etc
-		explanations = getKeyData(pressedKey[e.key.toLowerCase()]);
+
+		// console.log("a", a.key);
+		let convertedKeys = e.key.toLowerCase();
+		if (e.ctrlKey && e.shiftKey && e.altKey && e.metaKey) {
+			convertedKeys = `ctrl+shift+alt+win+${convertedKeys}`;
+		} else if (e.ctrlKey && e.shiftKey && e.altKey) {
+			convertedKeys = `ctrl+shift+alt+${convertedKeys}`;
+		} else if (e.ctrlKey && e.shiftKey && e.metaKey) {
+			convertedKeys = `ctrl+shift+win+${convertedKeys}`;
+		} else if (e.ctrlKey && e.altKey && e.metaKey) {
+			convertedKeys = `ctrl+alt+win+${convertedKeys}`;
+		} else if (e.ctrlKey && e.shiftKey) {
+			convertedKeys = `ctrl+shift+${convertedKeys}`;
+		} else if (e.ctrlKey && e.altKey) {
+			convertedKeys = `ctrl+alt+${convertedKeys}`;
+		} else if (e.ctrlKey && e.metaKey) {
+			convertedKeys = `ctrl+win+${convertedKeys}`;
+		} else if (e.ctrlKey) {
+			convertedKeys = `ctrl+${convertedKeys}`;
+		} else if (e.shiftKey) {
+			convertedKeys = `shift+${convertedKeys}`;
+		} else if (e.altKey) {
+			convertedKeys = `alt+${convertedKeys}`;
+		}
+		convertedKeys = convertedKeys.replaceAll("arrow", "");
+		console.log(convertedKeys);
+		explanations = data.json.filter((a) => a.key === convertedKeys);
+		console.log("expl", explanations);
+		if (explanations.length === 0) {
+			explanations = [{ key: `No key detected for ${convertedKeys}.` }];
+		}
+		// explanations = getKeyData(e);
+
 		console.log(e);
 	}
 	function handleKeyup(e) {
-		pressedKey[e.key.toLowerCase()] = "";
+		pressedKey = {};
 		//  console.log(e)
+	}
+
+	function getUnboundKeys() {
+		// thanks chatgpt (... took 10 tries though)
+		const modifierKeys = ["ctrl", "shift", "alt", "win"];
+		const otherKeys = [
+			"a",
+			"b",
+			"c",
+			"d",
+			"e",
+			"f",
+			"g",
+			"h",
+			"i",
+			"j",
+			"k",
+			"l",
+			"m",
+			"n",
+			"o",
+			"p",
+			"q",
+			"r",
+			"s",
+			"t",
+			"u",
+			"v",
+			"w",
+			"x",
+			"y",
+			"z",
+			"0",
+			"1",
+			"2",
+			"3",
+			"4",
+			"5",
+			"6",
+			"7",
+			"8",
+			"9",
+			"space",
+			"enter",
+			"tab",
+			"escape",
+			"backspace",
+			"capslock",
+			"up",
+			"down",
+			"left",
+			"right",
+			"oem_plus",
+			"oem_minus",
+			// laptop keys only
+			// 'home', 'end', 'insert', 'delete', 'pageup', 'pagedown',
+			// 'numlock', 'scrolllock', 'pause', 'printscreen',
+			"f1",
+			"f2",
+			"f3",
+			"f4",
+			"f5",
+			"f6",
+			"f7",
+			"f8",
+			"f9",
+			"f10",
+			"f11",
+			"f12",
+			// Add more keys as needed
+		];
+		function generateCombinations(modifiers, keys) {
+			const combinations = [];
+
+			// Sort modifier keys based on desired order
+			modifiers.sort((a, b) => {
+				return modifierKeys.indexOf(a) - modifierKeys.indexOf(b);
+			});
+
+			// Generate combinations
+			for (let i = 0; i < keys.length; i++) {
+				combinations.push(keys[i]);
+
+				for (let j = 0; j < modifiers.length; j++) {
+					combinations.push(
+						modifiers
+							.slice(0, j + 1)
+							.concat(keys[i])
+							.join("+")
+					);
+				}
+			}
+
+			return combinations;
+		}
+
+		let allCombinations = generateCombinations(modifierKeys, otherKeys);
+		allCombinations = allCombinations.filter((key) => !/^[a-z]$|^shift\+[a-z]$|^[0-9]$/.test(key));
+		// console.log(allCombinations);
+		// console.log(data.json);
+		// Extract the bound keys from the data object
+		const boundKeyStrings = Object.values(data.json).map((obj) => obj.key);
+
+		// Find the unbound keys
+		const unboundKeys = allCombinations.filter((key) => !boundKeyStrings.includes(key));
+
+		console.log(unboundKeys);
+		explanations = [[`The following keys are not bound:`], unboundKeys];
 	}
 
 	let explanations;
 </script>
 
 <svelte:window on:keydown|preventDefault={handleKeydown} on:keyup|preventDefault={handleKeyup} />
+<div class="flex flex-col items-center">
+	<h1 class="text-4xl">VSCode hotkey viewer</h1>
+	<h2>Press a key combination to see your defined hotkeys.</h2>
+	<button on:click={() => getUnboundKeys()}>Get all unbound keys</button>
+</div>
 <div class="m-4">
 	<input bind:checked={dvorak} type="checkbox" name="layout-toggle" id="" />
 	<label for="layout-toggle">Dvorak </label>
@@ -211,13 +354,14 @@
 				</button>
 			{/each}
 		</div>
-		<div>
+		<div class="flex items-center">
 			{#each keys6 as key}
 				<button
 					class:bg-blue-400={pressedKey[key] === key}
-					class:w-78={key === "spacebar"}
-					class:w-16={key === "ctrl" ||
-						key === "win" ||
+					class:min-h-10={key === " "}
+					class:w-78={key === " "}
+					class:w-16={key === "control" ||
+						key === "meta" ||
 						key === "alt" ||
 						key === "altgr" ||
 						key === "fn"}

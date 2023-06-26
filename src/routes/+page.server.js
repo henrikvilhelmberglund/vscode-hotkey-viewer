@@ -13,6 +13,10 @@ export async function load() {
 	json = fs.readFileSync(keybindingsPath, "utf-8");
 	json = JSON.parse(stripJsonComments(json));
 
+	// Filter out commands starting with "-"
+	defaultJSON = defaultJSON.filter((keybinding) => !keybinding.command.startsWith("-"));
+	json = json.filter((keybinding) => !keybinding.command.startsWith("-"));
+
 	for (const userKeybinding of json) {
 		const index = defaultJSON.findIndex((defaultJSON) => defaultJSON.key === userKeybinding.key);
 

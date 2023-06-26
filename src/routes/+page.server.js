@@ -8,7 +8,7 @@ export async function load() {
 	const keybindingsPath = `${appDataPath}/Code/User/keybindings.json`;
 	let defaultJSON = fs.readFileSync("./src/lib/default.json", "utf-8");
 	defaultJSON = JSON.parse(stripJsonComments(defaultJSON));
-	console.log(defaultJSON);
+	// console.log(defaultJSON);
 	let json;
 	json = fs.readFileSync(keybindingsPath, "utf-8");
 

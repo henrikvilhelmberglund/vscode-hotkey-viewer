@@ -3,12 +3,14 @@
 	import { KEYBOARD, MODIFIER_COMBINATIONS, MODIFIER_KEYS, OTHER_KEYS } from "$lib/constants.js";
 
 	export let data;
+	// console.log(data.json)
 	Error.stackTraceLimit = 0;
 	// Error.stackTraceLimit = Infinity;
 
 	let dvorak = true;
 	let pressedKey = {};
 	let wasClicked = false;
+	let prefix;
 
 	$: layout = dvorak ? "dvorak" : "qwerty";
 
@@ -20,21 +22,24 @@
 		inKey = inKey.replaceAll("arrow", "");
 		inKey = inKey.replaceAll(".", "oem_1");
 		inKey = inKey.replaceAll("´", "oem_6");
-    inKey = inKey.replaceAll("¨", "oem_plus");
+		inKey = inKey.replaceAll("¨", "oem_plus");
 		inKey = inKey.replaceAll(" ", "space");
 		let keys = data.json.filter((a) => {
 			return (
 				a.key === inKey ||
 				a.key === `ctrl+${inKey}` ||
 				a.key === `shift+${inKey}` ||
-				a.key === `alt+${inKey}`
+				a.key === `alt+${inKey}` || 
+        a.key === `ctrl+shift+${inKey}` ||
+				a.key === `ctrl+alt+${inKey}` ||
+				a.key === `shift+alt+${inKey}`
 			);
 		});
 		return keys;
 	}
 
 	function handleKeydown(e) {
-		// console.log(e);
+		console.log(e);
 		if (wasClicked) {
 			pressedKey = {};
 			wasClicked = false;
@@ -46,8 +51,8 @@
 		inKey = inKey.replaceAll(" ", "space");
 
 		let convertedKeys = inKey;
-		let prefix = "";
-		prefix +=
+		// prefix = "";
+		prefix =
 			(e.ctrlKey ? "ctrl+" : "") +
 			(e.shiftKey ? "shift+" : "") +
 			(e.altKey ? "alt+" : "") +
@@ -66,7 +71,11 @@
 
 	function handleKeyup(e) {
 		let inKey = e.key.toLowerCase();
-		pressedKey[inKey] = {};
+		// console.log(inKey);
+		inKey === "control" ? (inKey = "ctrl") : (inKey = inKey);
+		prefix = prefix.replaceAll(`${inKey}+`, "");
+		// ? now we're really Svelting
+		pressedKey = delete pressedKey[inKey] && pressedKey;
 		inKey = inKey.replaceAll("arrow", "");
 		inKey = inKey.replaceAll(".", "oem_1");
 		inKey = inKey.replaceAll(" ", "space");
@@ -130,6 +139,9 @@
 					<!-- {pressedKey[key]} 
         {key} -->
 					<button
+						class:bg-green-400={Object.values(data.json)
+							.map((o) => o.key)
+							.includes(prefix + key)}
 						class:bg-blue-400={pressedKey[key] === key}
 						class:!shadow-transparent={key === "empty" || key === "empty2"}
 						class:bg-transparent={key === "empty" || key === "empty2"}

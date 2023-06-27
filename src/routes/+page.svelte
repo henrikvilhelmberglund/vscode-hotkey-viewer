@@ -8,22 +8,34 @@
 
 	let dvorak = true;
 	let pressedKey = {};
+	let wasClicked = false;
 
 	$: layout = dvorak ? "dvorak" : "qwerty";
 
 	function getKeyData(key) {
+		wasClicked = true;
+		pressedKey = {};
+		let inKey = key;
+		pressedKey[inKey] = inKey;
+		inKey = inKey.replaceAll("arrow", "");
+		inKey = inKey.replaceAll(".", "oem_1");
+		inKey = inKey.replaceAll(" ", "space");
 		let keys = data.json.filter((a) => {
 			return (
-				a.key === key ||
-				a.key === `ctrl+${key}` ||
-				a.key === `shift+${key}` ||
-				a.key === `alt+${key}`
+				a.key === inKey ||
+				a.key === `ctrl+${inKey}` ||
+				a.key === `shift+${inKey}` ||
+				a.key === `alt+${inKey}`
 			);
 		});
 		return keys;
 	}
 
 	function handleKeydown(e) {
+		if (wasClicked) {
+			pressedKey = {};
+			wasClicked = false;
+		}
 		let inKey = e.key.toLowerCase();
 		pressedKey[inKey] = inKey;
 		inKey = inKey.replaceAll("arrow", "");
@@ -54,6 +66,8 @@
 		pressedKey[inKey] = {};
 		inKey = inKey.replaceAll("arrow", "");
 		inKey = inKey.replaceAll(".", "oem_1");
+		inKey = inKey.replaceAll(" ", "space");
+
 		//  console.log(e)
 	}
 
@@ -129,7 +143,9 @@
 							key === "altgr" ||
 							key === "fn"}
 						class="m-1 h-12 w-12 rounded bg-white p-2 text-black"
-						on:click={() => (explanations = getKeyData(key))}>
+						on:click={() => {
+							explanations = getKeyData(key);
+						}}>
 						{key}
 					</button>
 				{/each}

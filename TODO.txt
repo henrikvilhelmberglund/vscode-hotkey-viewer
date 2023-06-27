@@ -1,4 +1,0 @@
-
-TODO:
-  @file:///c%3A/Github/vscode-hotkey-viewer/src/routes/%2Bpage.svelte
-    ☐ <!-- TODO: not very dry --> @file:///c%3A/Github/vscode-hotkey-viewer/src/routes/%2Bpage.svelte#305

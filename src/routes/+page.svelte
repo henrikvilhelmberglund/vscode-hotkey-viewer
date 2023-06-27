@@ -17,10 +17,12 @@
 	}
 
 	function handleKeydown(e) {
-		pressedKey[e.key.toLowerCase()] = e.key.toLowerCase();
+		let inKey = e.key.toLowerCase();
+		inKey = inKey.replaceAll("arrow", "");
+		inKey = inKey.replaceAll(".", "oem_1");
+		pressedKey[inKey] = inKey;
 
-		// console.log("a", a.key);
-		let convertedKeys = e.key.toLowerCase();
+		let convertedKeys = inKey;
 		let prefix = "";
 		prefix +=
 			(e.ctrlKey ? "ctrl+" : "") +
@@ -29,24 +31,22 @@
 			(e.metaKey ? "meta+" : "");
 
 		convertedKeys = prefix + convertedKeys;
-		convertedKeys = convertedKeys.replaceAll("arrow", "");
-		convertedKeys = convertedKeys.replaceAll(".", "oem_1");
-		console.log(convertedKeys);
 
 		explanations = data.json.filter((a) => {
 			return a.key === convertedKeys;
 		});
-		console.log("expl", explanations);
 		if (explanations.length === 0) {
 			explanations = [{ key: `No key detected for ${convertedKeys}.` }];
 		}
 		// explanations = getKeyData(e);
-
-		console.log(e);
 	}
 
 	function handleKeyup(e) {
-		pressedKey = {};
+		let inKey = e.key.toLowerCase();
+		inKey = inKey.replaceAll("arrow", "");
+		inKey = inKey.replaceAll(".", "oem_1");
+		console.log(inKey);
+		pressedKey[inKey] = {};
 		//  console.log(e)
 	}
 
@@ -78,7 +78,7 @@
 		}
 
 		let allCombinations = generateCombinations(MODIFIER_KEYS, OTHER_KEYS);
-		allCombinations = allCombinations.filter((key) => !/^[a-z]$|^shift\+[a-z]$|^[0-9]$/.test(key));
+		allCombinations = allCombinations.filter((key) => !/^[a-z]$|^shift\+[a-z]$|^[0-9]$|^oem_plus$|^oem_minus$/.test(key));
 		// console.log(allCombinations);
 		// console.log(data.json);
 		// Extract the bound keys from the data object
@@ -98,24 +98,25 @@
 <div class="flex flex-col items-center">
 	<h1 class="text-4xl">VSCode hotkey viewer</h1>
 	<h2>Press a key combination to see your defined hotkeys.</h2>
-	<button class="rounded bg-green-300 p-2" on:click={() => getUnboundKeys()}
-		>Get all unbound keys</button>
+	<button class="rounded bg-green-300 p-2" on:click={() => getUnboundKeys()}>
+		Get all unbound keys</button>
 </div>
 <div class="ml-8">
 	<input bind:checked={dvorak} type="checkbox" name="layout-toggle" id="" />
 	<label for="layout-toggle">Dvorak </label>
 </div>
 <main class="ml-8 flex h-screen w-[screen-100px]">
-	<div class="h-[400px] w-[1000px] flex-col rounded bg-slate-800 p-1 shadow-lg shadow-black/50">
+	<div class="h-[350px] w-[1000px] flex-col rounded bg-slate-800 p-1 shadow-lg shadow-black/50">
 		{#each Object.values(KEYBOARD[layout]) as row}
-			<div>
+			<div class="flex">
 				{#each row as key}
 					<button
 						class:bg-blue-400={pressedKey[key] === key}
-						class:!shadow-transparent={key === "empty"}
-						class:bg-transparent={key === "empty"}
-						class:text-transparent={key === "empty"}
+						class:!shadow-transparent={key === "empty" || key === "empty2"}
+						class:bg-transparent={key === "empty" || key === "empty2"}
+						class:text-transparent={key === "empty" || key === "empty2"}
 						class:w-6={key === "empty"}
+						class:w-12={key === "empty2"}
 						class:w-22={key === "backspace" || key === "caps"}
 						class:w-18={key === "tab"}
 						class:w-32={key === "shift2"}
@@ -127,7 +128,7 @@
 							key === "alt" ||
 							key === "altgr" ||
 							key === "fn"}
-						class="m-1 w-12 rounded bg-white p-2 text-black"
+						class="m-1 h-12 w-12 rounded bg-white p-2 text-black"
 						on:click={() => (explanations = getKeyData(key))}>
 						{key}
 					</button>
@@ -135,12 +136,11 @@
 			</div>
 		{/each}
 	</div>
-	<div class="ml-4 h-96 h-min min-h-[400px] w-max rounded bg-slate-800 p-2">
+	<div class="ml-4 h-96 h-min min-h-[350px] w-[800px] rounded bg-slate-800 p-2">
 		{#if explanations}
 			{#each explanations as object}
-				<div class="m-4 w-[800px] rounded-lg bg-white p-2">
+				<div class="m-4 rounded-lg bg-white p-2">
 					{#each Object.entries(object) as [key, value]}
-						<!-- <p class="text-3xl break-all">{key}</p> -->
 						<p class:font-bold={["key", "command"].includes(key)} class="break-all text-3xl">
 							{value}
 						</p>

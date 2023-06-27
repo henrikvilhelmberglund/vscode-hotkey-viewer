@@ -18,7 +18,7 @@
 				a.key === key ||
 				a.key === `ctrl+${key}` ||
 				a.key === `shift+${key}` ||
-				a.key === `alt+${key}` ||
+				a.key === `alt+${key}`
 			);
 		});
 		console.log(keys);

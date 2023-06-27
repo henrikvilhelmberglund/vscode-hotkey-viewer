@@ -8,12 +8,124 @@
 	// Error.stackTraceLimit = Infinity;
 
 	let dvorak = true;
+
+	$: layout = dvorak ? "dvorak" : "qwerty";
+
 	let keys1 = [];
 	let keys2 = [];
 	let keys3 = [];
 	let keys4 = [];
 	let keys5 = [];
 	let keys6 = [];
+
+	const keyboard = {
+		dvorak: {
+			row1: [
+				"esc",
+				"empty",
+				"f1",
+				"f2",
+				"f3",
+				"f4",
+				"empty",
+				"f5",
+				"f6",
+				"f7",
+				"f8",
+				"empty",
+				"f9",
+				"f10",
+				"f11",
+				"f12",
+			],
+			row2: ["§", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "+", "´", "backspace"],
+			row3: ["tab", ":", ";", "=", "p", "y", "f", "g", "c", "r", "l", ",", "¨"],
+			row4: ["caps", "a", "o", "e", "u", "i", "d", "h", "t", "n", "s", "-", "'", "enter"],
+			row5: [
+				"shift",
+				"<",
+				".",
+				"q",
+				"j",
+				"k",
+				"x",
+				"b",
+				"m",
+				"w",
+				"v",
+				"z",
+				"shift2",
+				"empty",
+				"up",
+			],
+			row6: [
+				"control",
+				"meta",
+				"alt",
+				" ",
+				"altgr",
+				"meta",
+				"fn",
+				"control",
+				"left",
+				"down",
+				"right",
+			],
+		},
+		qwerty: {
+			row1: [
+				"esc",
+				"empty",
+				"f1",
+				"f2",
+				"f3",
+				"f4",
+				"empty",
+				"f5",
+				"f6",
+				"f7",
+				"f8",
+				"empty",
+				"f9",
+				"f10",
+				"f11",
+				"f12",
+			],
+			row2: ["§", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "+", "´", "backspace"],
+			row3: ["tab", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "å", "¨"],
+			row4: ["caps", "a", "s", "d", "f", "g", "h", "j", "k", "l", "ö", "ä", "'", "enter"],
+			row5: [
+				"shift",
+				"<",
+				"z",
+				"x",
+				"c",
+				"v",
+				"b",
+				"b",
+				"m",
+				",",
+				".",
+				"-",
+				"shift2",
+				"empty",
+				"up",
+			],
+			row6: [
+				"control",
+				"meta",
+				"alt",
+				" ",
+				"altgr",
+				"meta",
+				"fn",
+				"control",
+				"left",
+				"down",
+				"right",
+			],
+		},
+	};
 
 	$: {
 		if (dvorak) {
@@ -300,89 +412,33 @@
 </div>
 <main class="ml-8 flex h-screen w-[screen-100px]">
 	<div class="h-[400px] w-[1000px] flex-col rounded bg-slate-800 p-1 shadow-lg shadow-black/50">
-		<div>
-			{#each keys1 as key}
-				<!-- TODO: not very dry -->
-				<button
-					class:bg-blue-400={pressedKey[key] === key}
-					class:bg-transparent={key === "empty"}
-					class:text-transparent={key === "empty"}
-					class:w-6={key === "empty"}
-					class:!shadow-transparent={key === "empty"}
-					class="m-1 w-12 rounded bg-white p-2 text-black"
-					on:click={() => (explanations = getKeyData(key))}>
-					{key}
-				</button>
-			{/each}
-		</div>
-		<div>
-			{#each keys2 as key}
-				<button
-					class:bg-blue-400={pressedKey[key] === key}
-					class:w-22={key === "backspace"}
-					class="m-1 w-12 rounded bg-white p-2 text-black"
-					on:click={() => (explanations = getKeyData(key))}>
-					{key}
-				</button>
-			{/each}
-		</div>
-		<div>
-			{#each keys3 as key}
-				<button
-					class:bg-blue-400={pressedKey[key] === key}
-					class:w-18={key === "tab"}
-					class="m-1 w-12 rounded bg-white p-2 text-black"
-					on:click={() => (explanations = getKeyData(key))}>
-					{key}
-				</button>
-			{/each}
-		</div>
-		<div>
-			{#each keys4 as key}
-				<button
-					class:bg-blue-400={pressedKey[key] === key}
-					class:w-22={key === "caps"}
-					class="m-1 w-12 rounded bg-white p-2 text-black"
-					on:click={() => (explanations = getKeyData(key))}>
-					{key}
-				</button>
-			{/each}
-		</div>
-		<div>
-			{#each keys5 as key}
-				<button
-					class:bg-blue-400={pressedKey[key] === key}
-					class:w-16={key === "shift"}
-					class:w-32={key === "shift2"}
-					class:bg-transparent={key === "empty"}
-					class:text-transparent={key === "empty"}
-					class:!shadow-transparent={key === "empty"}
-					class="m-1 w-12 rounded bg-white p-2 text-black"
-					on:click={() => (explanations = getKeyData(key))}>
-					{key}
-				</button>
-			{/each}
-		</div>
-		<div class="flex items-center">
-			{#each keys6 as key}
-				<button
-					class:bg-blue-400={pressedKey[key] === key}
-					class:min-h-10={key === " "}
-					class:w-78={key === " "}
-					class:w-16={key === "control" ||
-						key === "meta" ||
-						key === "alt" ||
-						key === "altgr" ||
-						key === "fn"}
-					class:bg-transparent={key === "empty"}
-					class:text-transparent={key === "empty"}
-					class:!shadow-transparent={key === "empty"}
-					class="m-1 w-12 rounded bg-white p-2 text-black"
-					on:click={() => (explanations = getKeyData(key))}>
-					{key}
-				</button>
-			{/each}
-		</div>
+		{#each Object.values(keyboard[layout]) as row}
+			<div>
+				{#each row as key}
+					<button
+						class:bg-blue-400={pressedKey[key] === key}
+						class:!shadow-transparent={key === "empty"}
+						class:bg-transparent={key === "empty"}
+						class:text-transparent={key === "empty"}
+						class:w-6={key === "empty"}
+						class:w-22={key === "backspace" || key === "caps"}
+						class:w-18={key === "tab"}
+						class:w-32={key === "shift2"}
+						class:min-h-10={key === " "}
+						class:w-78={key === " "}
+						class:w-16={key === "shift" ||
+							key === "control" ||
+							key === "meta" ||
+							key === "alt" ||
+							key === "altgr" ||
+							key === "fn"}
+						class="m-1 w-12 rounded bg-white p-2 text-black"
+						on:click={() => (explanations = getKeyData(key))}>
+						{key}
+					</button>
+				{/each}
+			</div>
+		{/each}
 	</div>
 	<div class="ml-4 h-96 h-min min-h-[400px] w-max rounded bg-slate-800 p-2">
 		{#if explanations}

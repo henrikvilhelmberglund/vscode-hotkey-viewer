@@ -21,7 +21,23 @@ export const KEYBOARD = {
 		row2: ["§", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "+", "´", "backspace"],
 		row3: ["tab", ":", ";", "=", "p", "y", "f", "g", "c", "r", "l", ",", "¨"],
 		row4: ["caps", "a", "o", "e", "u", "i", "d", "h", "t", "n", "s", "-", "'", "enter"],
-		row5: ["shift", "<", ".", "q", "j", "k", "x", "b", "m", "w", "v", "z", "shift2", "empty2", "up"],
+		row5: [
+			"shift",
+			"<",
+			".",
+			"q",
+			"j",
+			"k",
+			"x",
+			"b",
+			"m",
+			"w",
+			"v",
+			"z",
+			"shift2",
+			"empty2",
+			"up",
+		],
 		row6: [
 			"control",
 			"meta",
@@ -58,7 +74,23 @@ export const KEYBOARD = {
 		row2: ["§", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "+", "´", "backspace"],
 		row3: ["tab", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "å", "¨"],
 		row4: ["caps", "a", "s", "d", "f", "g", "h", "j", "k", "l", "ö", "ä", "'", "enter"],
-		row5: ["shift", "<", "z", "x", "c", "v", "b", "b", "m", ",", ".", "-", "shift2", "empty2", "up"],
+		row5: [
+			"shift",
+			"<",
+			"z",
+			"x",
+			"c",
+			"v",
+			"b",
+			"b",
+			"m",
+			",",
+			".",
+			"-",
+			"shift2",
+			"empty2",
+			"up",
+		],
 		row6: [
 			"control",
 			"meta",
@@ -141,4 +173,13 @@ export const OTHER_KEYS = [
 	"f11",
 	"f12",
 	// Add more keys as needed
+];
+
+export const MODIFIER_COMBINATIONS = [
+	"ctrl+",
+	"alt+",
+	"shift+",
+	"ctrl+alt+",
+	"ctrl+shift+",
+	"ctrl+alt+shift+",
 ];

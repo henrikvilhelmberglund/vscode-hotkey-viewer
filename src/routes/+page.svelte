@@ -12,7 +12,6 @@
 	$: layout = dvorak ? "dvorak" : "qwerty";
 
 	function getKeyData(key) {
-		console.log(key);
 		let keys = data.json.filter((a) => {
 			return (
 				a.key === key ||
@@ -21,7 +20,6 @@
 				a.key === `alt+${key}`
 			);
 		});
-		console.log(keys);
 		return keys;
 	}
 
@@ -54,7 +52,6 @@
 		let inKey = e.key.toLowerCase();
 		inKey = inKey.replaceAll("arrow", "");
 		inKey = inKey.replaceAll(".", "oem_1");
-		console.log(inKey);
 		pressedKey[inKey] = {};
 		//  console.log(e)
 	}
@@ -87,7 +84,6 @@
 		// Find the unbound keys
 		const unboundKeys = allCombinations.filter((key) => !boundKeyStrings.includes(key));
 
-		console.log(unboundKeys);
 		explanations = [[`The following keys are not bound:`], unboundKeys];
 	}
 

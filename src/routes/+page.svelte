@@ -11,13 +11,6 @@
 
 	$: layout = dvorak ? "dvorak" : "qwerty";
 
-	let keys1 = [];
-	let keys2 = [];
-	let keys3 = [];
-	let keys4 = [];
-	let keys5 = [];
-	let keys6 = [];
-
 	const keyboard = {
 		dvorak: {
 			row1: [
@@ -127,113 +120,6 @@
 		},
 	};
 
-	$: {
-		if (dvorak) {
-			keys1 = [
-				"esc",
-				"empty",
-				"f1",
-				"f2",
-				"f3",
-				"f4",
-				"empty",
-				"f5",
-				"f6",
-				"f7",
-				"f8",
-				"empty",
-				"f9",
-				"f10",
-				"f11",
-				"f12",
-			];
-			keys2 = ["§", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "+", "´", "backspace"];
-			keys3 = ["tab", ":", ";", "=", "p", "y", "f", "g", "c", "r", "l", ",", "¨"];
-			keys4 = ["caps", "a", "o", "e", "u", "i", "d", "h", "t", "n", "s", "-", "'", "enter"];
-			keys5 = [
-				"shift",
-				"<",
-				".",
-				"q",
-				"j",
-				"k",
-				"x",
-				"b",
-				"m",
-				"w",
-				"v",
-				"z",
-				"shift2",
-				"empty",
-				"up",
-			];
-			keys6 = [
-				"control",
-				"meta",
-				"alt",
-				" ",
-				"altgr",
-				"meta",
-				"fn",
-				"control",
-				"left",
-				"down",
-				"right",
-			];
-		} else {
-			keys1 = [
-				"esc",
-				"empty",
-				"f1",
-				"f2",
-				"f3",
-				"f4",
-				"empty",
-				"f5",
-				"f6",
-				"f7",
-				"f8",
-				"empty",
-				"f9",
-				"f10",
-				"f11",
-				"f12",
-			];
-			keys2 = ["§", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "+", "´", "backspace"];
-			keys3 = ["tab", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "å", "¨"];
-			keys4 = ["caps", "a", "s", "d", "f", "g", "h", "j", "k", "l", "ö", "ä", "'", "enter"];
-			keys5 = [
-				"shift",
-				"<",
-				"z",
-				"x",
-				"c",
-				"v",
-				"b",
-				"b",
-				"m",
-				",",
-				".",
-				"-",
-				"shift2",
-				"empty",
-				"up",
-			];
-			keys6 = [
-				"control",
-				"meta",
-				"alt",
-				" ",
-				"altgr",
-				"meta",
-				"fn",
-				"control",
-				"left",
-				"down",
-				"right",
-			];
-		}
-	}
 	function getKeyData(key) {
 		explanations = data.json.filter((a) => a.key === key);
 		return keys;

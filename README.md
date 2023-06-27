@@ -1,32 +1,13 @@
-# SvelteKit UnoCSS Template
+# VSCode hotkey viewer
 
-This is a template containing the following:
+An app to see your VSCode hotkeys. No idea if it works on Mac or not.
 
-- SvelteKit
-  with adapter-static for easier Github Pages deployment
-- UnoCSS
-  using Svelte scoped mode
-- - and unocss-preset-heropatterns, unocss-preset-theme
-- Prettier Plugin TailwindCSS
-  for auto sorting of classes
-- Commit-and-Tag-Version
-  for CHANGELOG generation and Github tagging of versions
-- PrismJS
-  with Prism-Svelte for syntax highlighting of code blocks
-- svelte-local-storage-store
-  for using session/local storage with stores
+## Usage
 
-Prettier Plugin TailwindCSS auto loading is broken when using pnpm so I recommend npm.
+1. Fork this repo.
 
-Don't forget to import the base path alias:
+2. `npm install`
 
-```
-<script>
-	import { base } from "$app/paths";
-</script>
+3. `npm run dev`
 
-```
-
-and write `{base}` before local links for them to work on Github Pages! (see /routes/+page.svelte)
-
-Have fun!
+4. Click on keys to see all hotkeys related to that key or press keys on your keyboard to find specific bindings.

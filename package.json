@@ -1,6 +1,6 @@
 {
-	"name": "sveltekit-unocss-template",
-	"version": "0.0.9",
+	"name": "vscode-hotkey-viewer",
+	"version": "0.0.0",
 	"private": true,
 	"scripts": {
 		"dev": "vite dev",

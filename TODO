@@ -2,3 +2,4 @@
 TODO:
   @file:///c%3A/Github/vscode-hotkey-viewer/src/routes/%2Bpage.svelte
     ✔ <!-- TODO: not very dry --> @file:///c%3A/Github/vscode-hotkey-viewer/src/routes/%2Bpage.svelte#305 @done(23-06-27 16:04)
+☐ //BUG funky keys like ´ and ¨ are not detected as real keys in keydown event (dead), but are clickable

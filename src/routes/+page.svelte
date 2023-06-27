@@ -4,6 +4,8 @@
 	import Footer from "$lib/Footer.svelte";
 
 	export let data;
+	Error.stackTraceLimit = 0;
+	// Error.stackTraceLimit = Infinity;
 
 	let dvorak = true;
 	let keys1 = [];
@@ -283,6 +285,8 @@
 	let explanations;
 </script>
 
+<div />
+
 <svelte:window on:keydown|preventDefault={handleKeydown} on:keyup|preventDefault={handleKeyup} />
 <div class="flex flex-col items-center">
 	<h1 class="text-4xl">VSCode hotkey viewer</h1>
@@ -290,12 +294,12 @@
 	<button class="rounded bg-green-300 p-2" on:click={() => getUnboundKeys()}
 		>Get all unbound keys</button>
 </div>
-<div class="m-4">
+<div class="ml-8">
 	<input bind:checked={dvorak} type="checkbox" name="layout-toggle" id="" />
 	<label for="layout-toggle">Dvorak </label>
 </div>
-<main class="flex h-screen w-screen">
-	<div class="h-[400px] w-[1000px] flex-col bg-slate-800 p-1">
+<main class="ml-8 flex h-screen w-[screen-100px]">
+	<div class="h-[400px] w-[1000px] flex-col rounded bg-slate-800 p-1 shadow-lg shadow-black/50">
 		<div>
 			{#each keys1 as key}
 				<!-- TODO: not very dry -->
@@ -380,7 +384,7 @@
 			{/each}
 		</div>
 	</div>
-	<div class="ml-8 h-96 w-min bg-slate-200 p-2">
+	<div class="ml-4 h-96 h-min min-h-[400px] w-max rounded bg-slate-800 p-2">
 		{#if explanations}
 			{#each explanations as object}
 				<div class="m-4 w-[800px] rounded-lg bg-white p-2">

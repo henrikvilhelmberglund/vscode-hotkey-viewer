@@ -1,7 +1,7 @@
 export const KEYBOARD = {
 	dvorak: {
 		row1: [
-			"esc",
+			"escape",
 			"empty",
 			"f1",
 			"f2",
@@ -54,7 +54,7 @@ export const KEYBOARD = {
 	},
 	qwerty: {
 		row1: [
-			"esc",
+			"escape",
 			"empty",
 			"f1",
 			"f2",

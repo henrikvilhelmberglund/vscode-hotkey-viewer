@@ -25,9 +25,10 @@
 
 	function handleKeydown(e) {
 		let inKey = e.key.toLowerCase();
+		pressedKey[inKey] = inKey;
 		inKey = inKey.replaceAll("arrow", "");
 		inKey = inKey.replaceAll(".", "oem_1");
-		pressedKey[inKey] = inKey;
+		inKey = inKey.replaceAll(" ", "space");
 
 		let convertedKeys = inKey;
 		let prefix = "";
@@ -50,9 +51,9 @@
 
 	function handleKeyup(e) {
 		let inKey = e.key.toLowerCase();
+		pressedKey[inKey] = {};
 		inKey = inKey.replaceAll("arrow", "");
 		inKey = inKey.replaceAll(".", "oem_1");
-		pressedKey[inKey] = {};
 		//  console.log(e)
 	}
 
@@ -107,6 +108,8 @@
 		{#each Object.values(KEYBOARD[layout]) as row}
 			<div class="flex">
 				{#each row as key}
+					<!-- {pressedKey[key]} 
+        {key} -->
 					<button
 						class:bg-blue-400={pressedKey[key] === key}
 						class:!shadow-transparent={key === "empty" || key === "empty2"}

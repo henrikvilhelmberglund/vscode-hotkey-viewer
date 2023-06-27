@@ -12,7 +12,16 @@
 	$: layout = dvorak ? "dvorak" : "qwerty";
 
 	function getKeyData(key) {
-		explanations = data.json.filter((a) => a.key === key);
+		console.log(key);
+		let keys = data.json.filter((a) => {
+			return (
+				a.key === key ||
+				a.key === `ctrl+${key}` ||
+				a.key === `shift+${key}` ||
+				a.key === `alt+${key}` ||
+			);
+		});
+		console.log(keys);
 		return keys;
 	}
 

@@ -1,6 +1,6 @@
 <script>
 	import Footer from "$lib/Footer.svelte";
-	import { KEYBOARD, MODIFIER_KEYS, OTHER_KEYS } from "$lib/constants.js";
+	import { KEYBOARD, MODIFIER_COMBINATIONS, MODIFIER_KEYS, OTHER_KEYS } from "$lib/constants.js";
 
 	export let data;
 	Error.stackTraceLimit = 0;
@@ -62,34 +62,25 @@
 	function getUnboundKeys() {
 		// thanks chatgpt (... took 10 tries though)
 
-		function generateCombinations(modifiers, keys) {
+		function generateCombinations(keys) {
 			const combinations = [];
-
-			// Sort modifier keys based on desired order
-			modifiers.sort((a, b) => {
-				return MODIFIER_KEYS.indexOf(a) - MODIFIER_KEYS.indexOf(b);
-			});
 
 			// Generate combinations
 			for (let i = 0; i < keys.length; i++) {
 				combinations.push(keys[i]);
 
-				for (let j = 0; j < modifiers.length; j++) {
-					combinations.push(
-						modifiers
-							.slice(0, j + 1)
-							.concat(keys[i])
-							.join("+")
-					);
-				}
+				MODIFIER_COMBINATIONS.forEach((combination) => {
+					combinations.push(combination.concat(keys[i]));
+				});
 			}
 			return combinations;
 		}
 
-		let allCombinations = generateCombinations(MODIFIER_KEYS, OTHER_KEYS);
-		allCombinations = allCombinations.filter((key) => !/^[a-z]$|^shift\+[a-z]$|^[0-9]$|^oem_plus$|^oem_minus$/.test(key));
-		// console.log(allCombinations);
-		// console.log(data.json);
+		let allCombinations = generateCombinations(OTHER_KEYS);
+		allCombinations = allCombinations.filter(
+			(key) => !/^[a-z]$|^shift\+[a-z]$|^shift\+[0-9]$|^[0-9]$|^oem_plus$|^oem_minus$/.test(key)
+		);
+
 		// Extract the bound keys from the data object
 		const boundKeyStrings = Object.values(data.json).map((obj) => obj.key);
 
@@ -106,7 +97,8 @@
 <svelte:window on:keydown|preventDefault={handleKeydown} on:keyup|preventDefault={handleKeyup} />
 <div class="flex flex-col items-center">
 	<h1 class="text-4xl">VSCode hotkey viewer</h1>
-	<h2>Press a key combination to see your defined hotkeys.</h2>
+	<h2>Press a key combination using the keyboard to see your defined hotkeys.</h2>
+	<h2>Click a key to see all combinations including that key.</h2>
 	<button class="rounded bg-green-300 p-2" on:click={() => getUnboundKeys()}>
 		Get all unbound keys</button>
 </div>

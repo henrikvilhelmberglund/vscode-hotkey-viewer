@@ -29,8 +29,8 @@
 				a.key === inKey ||
 				a.key === `ctrl+${inKey}` ||
 				a.key === `shift+${inKey}` ||
-				a.key === `alt+${inKey}` || 
-        a.key === `ctrl+shift+${inKey}` ||
+				a.key === `alt+${inKey}` ||
+				a.key === `ctrl+shift+${inKey}` ||
 				a.key === `ctrl+alt+${inKey}` ||
 				a.key === `shift+alt+${inKey}`
 			);
@@ -49,6 +49,10 @@
 		inKey = inKey.replaceAll("arrow", "");
 		inKey = inKey.replaceAll(".", "oem_1");
 		inKey = inKey.replaceAll(" ", "space");
+    // stupid code ahead, these bindings shouldn't normally exist
+    inKey = inKey.replaceAll("}", "ctrl+alt+o");
+    inKey = inKey.replaceAll("{", "ctrl+alt+a");
+    inKey = inKey.replaceAll(":", "oem_1");
 
 		let convertedKeys = inKey;
 		// prefix = "";
@@ -72,8 +76,10 @@
 	function handleKeyup(e) {
 		let inKey = e.key.toLowerCase();
 		// console.log(inKey);
+		// ! this seems pretty stupid
 		inKey === "control" ? (inKey = "ctrl") : (inKey = inKey);
 		prefix = prefix.replaceAll(`${inKey}+`, "");
+		inKey === "ctrl" ? (inKey = "control") : (inKey = inKey);
 		// ? now we're really Svelting
 		pressedKey = delete pressedKey[inKey] && pressedKey;
 		inKey = inKey.replaceAll("arrow", "");

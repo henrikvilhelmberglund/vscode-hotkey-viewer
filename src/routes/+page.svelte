@@ -19,6 +19,8 @@
 		pressedKey[inKey] = inKey;
 		inKey = inKey.replaceAll("arrow", "");
 		inKey = inKey.replaceAll(".", "oem_1");
+		inKey = inKey.replaceAll("´", "oem_6");
+    inKey = inKey.replaceAll("¨", "oem_plus");
 		inKey = inKey.replaceAll(" ", "space");
 		let keys = data.json.filter((a) => {
 			return (
@@ -32,6 +34,7 @@
 	}
 
 	function handleKeydown(e) {
+		// console.log(e);
 		if (wasClicked) {
 			pressedKey = {};
 			wasClicked = false;
@@ -108,9 +111,11 @@
 <svelte:window on:keydown|preventDefault={handleKeydown} on:keyup|preventDefault={handleKeyup} />
 <div class="flex flex-col items-center">
 	<h1 class="text-4xl">VSCode hotkey viewer</h1>
-	<h2>Press a key combination using the keyboard to see your defined hotkeys.</h2>
-	<h2>Click a key to see all combinations including that key.</h2>
-	<button class="rounded bg-green-300 p-2" on:click={() => getUnboundKeys()}>
+	<div>
+		<h2>Press a key combination using the keyboard to see your defined hotkeys.</h2>
+		<h2>Click a key to see all combinations including that key.</h2>
+	</div>
+	<button class="rounded bg-green-400 p-2" on:click={() => getUnboundKeys()}>
 		Get all unbound keys</button>
 </div>
 <div class="ml-8">
@@ -134,6 +139,7 @@
 						class:w-22={key === "backspace" || key === "caps"}
 						class:w-18={key === "tab"}
 						class:w-32={key === "shift2"}
+						class:text-xs={key === "escape"}
 						class:min-h-10={key === " "}
 						class:w-78={key === " "}
 						class:w-16={key === "shift" ||

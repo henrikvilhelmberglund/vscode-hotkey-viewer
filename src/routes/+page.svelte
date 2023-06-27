@@ -131,27 +131,14 @@
 
 		// console.log("a", a.key);
 		let convertedKeys = e.key.toLowerCase();
-		if (e.ctrlKey && e.shiftKey && e.altKey && e.metaKey) {
-			convertedKeys = `ctrl+shift+alt+win+${convertedKeys}`;
-		} else if (e.ctrlKey && e.shiftKey && e.altKey) {
-			convertedKeys = `ctrl+shift+alt+${convertedKeys}`;
-		} else if (e.ctrlKey && e.shiftKey && e.metaKey) {
-			convertedKeys = `ctrl+shift+win+${convertedKeys}`;
-		} else if (e.ctrlKey && e.altKey && e.metaKey) {
-			convertedKeys = `ctrl+alt+win+${convertedKeys}`;
-		} else if (e.ctrlKey && e.shiftKey) {
-			convertedKeys = `ctrl+shift+${convertedKeys}`;
-		} else if (e.ctrlKey && e.altKey) {
-			convertedKeys = `ctrl+alt+${convertedKeys}`;
-		} else if (e.ctrlKey && e.metaKey) {
-			convertedKeys = `ctrl+win+${convertedKeys}`;
-		} else if (e.ctrlKey) {
-			convertedKeys = `ctrl+${convertedKeys}`;
-		} else if (e.shiftKey) {
-			convertedKeys = `shift+${convertedKeys}`;
-		} else if (e.altKey) {
-			convertedKeys = `alt+${convertedKeys}`;
-		}
+		let prefix = "";
+		prefix +=
+			(e.ctrlKey ? "ctrl+" : "") +
+			(e.shiftKey ? "shift+" : "") +
+			(e.altKey ? "alt+" : "") +
+			(e.metaKey ? "meta+" : "");
+
+		convertedKeys = prefix + convertedKeys;
 		convertedKeys = convertedKeys.replaceAll("arrow", "");
 		convertedKeys = convertedKeys.replaceAll(".", "oem_1");
 		console.log(convertedKeys);
